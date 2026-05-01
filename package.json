@@ -1,0 +1,22 @@
+{
+  "name": "notenest",
+  "version": "1.0.0",
+  "description": "A simple REST API where you can create, read, update and delete notes. No database — just an array in memory.",
+  "license": "ISC",
+  "author": "Oramulu Emmanuel Onyebuchukwu",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
