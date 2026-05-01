@@ -1,85 +1,150 @@
-Here's a project that uses everything you've covered.
+# NoteNest 🪺
 
----
+A simple REST API for creating, reading, updating, and deleting notes. Built with Node.js and Express — no database, just clean in-memory storage.
 
-### Build a Notes API
+## Tech Stack
 
-A simple REST API where you can create, read, update and delete notes. No database — just an array in memory.
+- **Node.js** — runtime
+- **Express** — web framework
+- **Helmet** — security headers
+- **Morgan** — HTTP request logging
+- **Nodemon** — dev auto-restart
 
----
-
-### What you'll practise
-
-- Express Router (splitting routes)
-- Middleware (validation, logging)
-- Error handling middleware
-- Helmet
-- All four HTTP methods (GET, POST, PUT, DELETE)
-- Route parameters
-
----
-
-### Structure
+## Project Structure
 
 ```
-notes-api/
+notenest/
 ├── index.js
 ├── routes/
 │   └── notes.js
-└── middleware/
-    ├── logger.js
-    ├── validateNote.js
-    └── errorHandler.js
+├── middlewares/
+│   ├── validateNote.js
+│   └── errorHandler.js
+└── utils/
+    └── idGenerator.js
 ```
 
----
+## Getting Started
 
-### Requirements
+### Prerequisites
 
-**A note object looks like this:**
-```js
-{ id: 1, title: 'My note', body: 'Note content here' }
+- Node.js installed
+- npm installed
+
+### Installation
+
+```bash
+git clone https://github.com/ORAMULU/notenest.git
+cd notenest
+npm install
 ```
 
-**Routes to build:**
+### Run in development
 
-| Method | URL | What it does |
-|---|---|---|
-| GET | `/notes` | Return all notes |
-| GET | `/notes/:id` | Return one note |
-| POST | `/notes` | Create a new note |
-| PUT | `/notes/:id` | Update a note |
-| DELETE | `/notes/:id` | Delete a note |
-
-**Middleware to write:**
-
-- `logger` — logs the method and URL of every request
-- `validateNote` — checks that `title` and `body` exist on POST/PUT, rejects with `400` if not
-- `errorHandler` — catches all errors, responds with `{ error, status }`
-
-**Rules:**
-- Use Helmet
-- If a note isn't found, pass a `404` error to `next()`
-- Keep fake data as an array at the top of your routes file
-
----
-
-### Start here
-
-```js
-// index.js
-const express = require('express');
-const helmet = require('helmet');
-const app = express();
-
-app.use(helmet());
-app.use(express.json());
-
-// your router and error handler go here
-
-app.listen(3000, () => console.log('Notes API running'));
+```bash
+npm run dev
 ```
 
----
+### Run in production
 
-Build it step by step — start with `index.js`, then the middleware files, then the routes. Paste each file here as you finish it and I'll review it.
+```bash
+npm start
+```
+
+Server runs on `http://localhost:7000`
+
+## API Endpoints
+
+Base URL: `/api/notes`
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/notes` | Get all notes |
+| GET | `/api/notes/:id` | Get a single note |
+| POST | `/api/notes` | Create a new note |
+| PUT | `/api/notes/:id` | Update a note |
+| DELETE | `/api/notes/:id` | Delete a note |
+
+## Request & Response Examples
+
+### GET /api/notes
+
+**Response**
+```json
+[
+  { "id": 1, "title": "Grocery List", "body": "Eggs, milk, bread, and peanut butter" },
+  { "id": 2, "title": "Project Idea", "body": "Build a CLI tool that generates Express boilerplate code" }
+]
+```
+
+### POST /api/notes
+
+**Request body**
+```json
+{
+  "title": "My Note",
+  "body": "Note content here"
+}
+```
+
+**Response** `201 Created`
+```json
+{
+  "id": 4,
+  "title": "My Note",
+  "body": "Note content here"
+}
+```
+
+### PUT /api/notes/:id
+
+**Request body**
+```json
+{
+  "title": "Updated Title",
+  "body": "Updated content"
+}
+```
+
+**Response** `200 OK`
+```json
+{
+  "id": 1,
+  "title": "Updated Title",
+  "body": "Updated content"
+}
+```
+
+### DELETE /api/notes/:id
+
+**Response** `204 No Content`
+
+## Validation
+
+POST and PUT requests require both fields:
+
+| Field | Type | Rules |
+|-------|------|-------|
+| `title` | string | Required |
+| `body` | string | Required |
+
+Missing fields return `400 Bad Request` with a descriptive error message.
+
+## Error Responses
+
+All errors return JSON in this format:
+
+```json
+{
+  "error": "Note not found",
+  "status": 404
+}
+```
+
+## Author
+
+**Oramulu Emmanuel Onyebuchukwu**
+
+## License
+
+ISC
