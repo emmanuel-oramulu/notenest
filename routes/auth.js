@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const validateUser = require('../middlewares/validateUser');
 const generateId = require('../utils/idGenerator');
 const generateToken = require('../utils/generateToken');
+const sendEmail = require('../utils/sendEmail');
 
 const DUMMY_HASH = '$2b$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
 
@@ -34,6 +35,18 @@ router.post('/register', validateUser, async (req, res, next) => {
   };
 
   users.push(newUser);
+  
+  await sendEmail({
+  to: email,
+  subject: 'Welcome to NoteNest 🪺',
+  html: `
+    <h1>Welcome, ${username}!</h1>
+    <p>Your account has been created successfully.</p>
+    <p>You can now log in and start creating your notes.</p>
+    <br>
+    <p>— The NoteNest Team</p>
+  `,
+});
 
   // const responseUser = {...newUser};
   // delete responseUser.password;
