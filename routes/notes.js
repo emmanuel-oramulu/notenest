@@ -9,8 +9,22 @@ router.use(requireAuth);
 let notes = [];
 
 router.get('/', (req, res) => {
-  const userNotes = notes.filter(n => n.userId === req.user.userId)
-  res.json(userNotes);
+  const userNotes = notes.filter(n => n.userId === req.user.userId);
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const paginatedNotes = userNotes.slice(startIndex, endIndex);
+
+  res.json({
+    page,
+    limit,
+    total: userNotes.length,
+    totalPages: Math.ceil(userNotes.length / limit),
+    data: paginatedNotes
+  });
 });
 
 router.get('/:id', (req, res, next) => {
@@ -70,9 +84,9 @@ router.delete('/:id', (req, res, next) => {
     err.status = 404;
     return next(err);
   }
-  
+
   const note = notes[noteId];
-  
+
   if (note.userId !== req.user.userId) {
     const err = new Error('Forbidden');
     err.status = 403;
