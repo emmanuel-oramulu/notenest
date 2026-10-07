@@ -34,7 +34,7 @@ notenest/
 ### Installation
 
 ```bash
-git clone https://github.com/ORAMULU/notenest.git
+git clone https://github.com/emmanuel-oramulu/notenest.git
 cd notenest
 npm install
 ```
@@ -143,7 +143,7 @@ All errors return JSON in this format:
 
 ## Author
 
-**Oramulu Emmanuel Onyebuchukwu**
+**Emmanuel Onyebuchukwu Oramulu**
 
 ## License
 
